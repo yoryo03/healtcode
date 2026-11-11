@@ -3,6 +3,10 @@
 Página de aterrizaje (landing) para un negocio, construida con **Astro 7** y **Tailwind CSS 4** (vía `@tailwindcss/vite`).
 Idioma del sitio y de la comunicación con el usuario: **español**.
 
+## Requisitos
+- Node.js **>= 22.23.4** (recomendado: la LTS actual de nodejs.org). Con Node 18/20 Astro no arranca.
+- En Windows PowerShell 5 no usar `&&` para encadenar comandos; ejecutarlos uno por línea.
+
 ## Comandos
 - `npm install` — instalar dependencias (necesario tras clonar)
 - `npm run dev` — servidor de desarrollo en http://localhost:4321
