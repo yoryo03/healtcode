@@ -6,6 +6,7 @@ Idioma del sitio y de la comunicación con el usuario: **español**.
 ## Requisitos
 - Node.js **>= 22.23.4** (recomendado: la LTS actual de nodejs.org). Con Node 18/20 Astro no arranca.
 - En Windows PowerShell 5 no usar `&&` para encadenar comandos; ejecutarlos uno por línea.
+- Si PowerShell bloquea `npm` ("la ejecución de scripts está deshabilitada"): `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` (una vez), o usar `npm.cmd` en lugar de `npm`.
 
 ## Comandos
 - `npm install` — instalar dependencias (necesario tras clonar)
