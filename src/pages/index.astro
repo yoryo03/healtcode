@@ -1,22 +1,38 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import About from '../components/About.astro';
+import Stats from '../components/Stats.astro';
+import ValueProps from '../components/ValueProps.astro';
+import Features from '../components/Features.astro';
+import Audiences from '../components/Audiences.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Pricing from '../components/Pricing.astro';
+import Compliance from '../components/Compliance.astro';
 import Testimonials from '../components/Testimonials.astro';
-import Contact from '../components/Contact.astro';
+import Demo from '../components/Demo.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <Layout>
+  <AnnouncementBar />
   <Header />
   <main>
     <Hero />
-    <Services />
-    <About />
+    <Stats />
+    <ValueProps />
+    <Features />
+    <Audiences />
+    <HowItWorks />
+    <Pricing />
+    <Compliance />
     <Testimonials />
-    <Contact />
+    <Demo />
+    <Faq />
+    <CtaBand />
   </main>
   <Footer />
 </Layout>

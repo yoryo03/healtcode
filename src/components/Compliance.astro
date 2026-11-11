@@ -1,0 +1,30 @@
+---
+import { compliance } from '../data/site';
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section id="normativa" class="scroll-mt-28 py-20 md:py-24">
+  <div class="mx-auto max-w-6xl px-4">
+    <SectionHeading
+      eyebrow="Normativa"
+      title="Normativa que cumple el software"
+      subtitle="Un prestador en Colombia responde por su factura, sus RIPS, su nómina y su historia clínica. HealthCode se mantiene al día por ti."
+    />
+    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {compliance.map((c) => (
+        <div class="flex gap-4 rounded-2xl border border-navy-100 p-6">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+            <Icon name="shield" class="h-5 w-5" />
+          </span>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-navy-400">{c.authority}</p>
+            <h3 class="mt-1 font-semibold text-navy-800">{c.title}</h3>
+            <p class="mt-1 text-sm font-medium text-brand-700">{c.reference}</p>
+            <p class="mt-2 text-sm leading-relaxed text-navy-500">{c.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

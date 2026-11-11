@@ -1,0 +1,18 @@
+---
+import { stats } from '../data/site';
+---
+
+{
+  stats.length > 0 && (
+    <section class="border-y border-navy-100 bg-white">
+      <dl class="mx-auto grid max-w-6xl grid-cols-2 divide-navy-100 px-4 py-8 md:grid-cols-4 md:divide-x">
+        {stats.map((s) => (
+          <div class="px-4 py-3 text-center">
+            <dd class="text-3xl font-extrabold tracking-tight text-navy-800">{s.value}</dd>
+            <dt class="mt-1 text-sm text-navy-500">{s.label}</dt>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}

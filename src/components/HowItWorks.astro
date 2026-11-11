@@ -1,0 +1,27 @@
+---
+import { steps } from '../data/site';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section id="como-funciona" class="scroll-mt-28 bg-navy-800 py-20 text-white md:py-24">
+  <div class="mx-auto max-w-6xl px-4">
+    <SectionHeading
+      eyebrow="Cómo funciona"
+      title="De la cita a la nómina en cuatro pasos"
+      subtitle="Un solo flujo para toda la institución. Sin reprocesos ni hojas de cálculo."
+      dark
+    />
+    <ol class="relative mt-14 grid gap-8 md:grid-cols-4">
+      <div class="absolute top-6 right-[12.5%] left-[12.5%] hidden h-px bg-white/15 md:block" aria-hidden="true"></div>
+      {steps.map((s, i) => (
+        <li class="relative">
+          <span class="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white ring-8 ring-navy-800">
+            {i + 1}
+          </span>
+          <h3 class="mt-5 text-lg font-semibold">{s.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-navy-200">{s.description}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

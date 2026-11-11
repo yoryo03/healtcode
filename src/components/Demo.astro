@@ -1,0 +1,96 @@
+---
+import { site, demo } from '../data/site';
+import Icon from './Icon.astro';
+
+const inputClass =
+  'mt-1 w-full rounded-lg border border-navy-200 bg-white px-3 py-2.5 text-navy-800 placeholder:text-navy-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 focus:outline-hidden';
+---
+
+<section id="demo" class="scroll-mt-28 py-20 md:py-24">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-2 lg:items-center">
+    <div>
+      <span class="eyebrow">{demo.eyebrow}</span>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-navy-800 md:text-4xl">{demo.title}</h2>
+      <p class="mt-4 text-lg text-navy-500">{demo.subtitle}</p>
+      <ul class="mt-8 space-y-3">
+        {demo.bullets.map((b) => (
+          <li class="flex items-start gap-3 text-navy-700">
+            <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
+              <Icon name="check" class="h-3 w-3" strokeWidth={3} />
+            </span>
+            {b}
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-10 flex flex-col gap-3 text-sm text-navy-600 sm:flex-row sm:flex-wrap sm:gap-6">
+        <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 font-medium hover:text-brand-700">
+          <Icon name="message" class="h-4 w-4 text-brand-600" /> WhatsApp
+        </a>
+        <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="inline-flex items-center gap-2 font-medium hover:text-brand-700">
+          <Icon name="phone" class="h-4 w-4 text-brand-600" /> {site.phone}
+        </a>
+        <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 font-medium hover:text-brand-700">
+          <Icon name="mail" class="h-4 w-4 text-brand-600" /> {site.email}
+        </a>
+      </div>
+    </div>
+
+    <!-- Sin backend por ahora: al enviar abre el cliente de correo. Se puede conectar a Formspree, Netlify Forms, etc. -->
+    <form id="demo-form" class="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft sm:p-8">
+      <h3 class="text-xl font-semibold text-navy-800">{demo.formTitle}</h3>
+      <p class="mt-1 text-sm text-navy-500">{demo.formSubtitle}</p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="name" class="text-sm font-medium text-navy-700">Nombre</label>
+          <input id="name" name="name" required autocomplete="name" class={inputClass} />
+        </div>
+        <div>
+          <label for="institution" class="text-sm font-medium text-navy-700">Institución</label>
+          <input id="institution" name="institution" required autocomplete="organization" class={inputClass} />
+        </div>
+        <div>
+          <label for="email" class="text-sm font-medium text-navy-700">Correo</label>
+          <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
+        </div>
+        <div>
+          <label for="phone" class="text-sm font-medium text-navy-700">Celular / WhatsApp</label>
+          <input id="phone" name="phone" type="tel" required autocomplete="tel" class={inputClass} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="type" class="text-sm font-medium text-navy-700">Tipo de institución</label>
+          <select id="type" name="type" class={inputClass}>
+            {demo.institutionTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="message" class="text-sm font-medium text-navy-700">¿Qué te gustaría ver en la demostración?</label>
+          <textarea id="message" name="message" rows="3" class={inputClass}></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-6 w-full">{demo.submitLabel}</button>
+      <p class="mt-3 text-center text-xs text-navy-400">{demo.privacyNote}</p>
+    </form>
+  </div>
+</section>
+
+<script define:vars={{ email: site.email }}>
+  document.getElementById('demo-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const subject = encodeURIComponent(`Solicitud de demostración · ${f.get('institution')}`);
+    const body = encodeURIComponent(
+      [
+        `Nombre: ${f.get('name')}`,
+        `Institución: ${f.get('institution')} (${f.get('type')})`,
+        `Correo: ${f.get('email')}`,
+        `Celular: ${f.get('phone')}`,
+        '',
+        `${f.get('message') || ''}`,
+      ].join('\n')
+    );
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  });
+</script>

@@ -1,0 +1,49 @@
+---
+import { pricing } from '../data/site';
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section id="planes" class="scroll-mt-28 bg-mist py-20 md:py-24">
+  <div class="mx-auto max-w-6xl px-4">
+    <SectionHeading eyebrow="Planes" title={pricing.title} subtitle={pricing.subtitle} />
+
+    <div class="mt-14 grid items-start gap-6 lg:grid-cols-3">
+      {pricing.plans.map((p) => (
+        <div
+          class:list={[
+            'relative flex flex-col rounded-2xl p-8',
+            p.featured ? 'bg-navy-800 text-white shadow-soft ring-1 ring-navy-800 lg:-mt-4 lg:mb-4' : 'border border-navy-100 bg-white',
+          ]}
+        >
+          {p.featured && (
+            <span class="absolute -top-3 left-8 rounded-full bg-brand-600 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+              Recomendado
+            </span>
+          )}
+          <h3 class="text-lg font-semibold">{p.name}</h3>
+          <p class:list={['mt-1 text-sm', p.featured ? 'text-navy-200' : 'text-navy-500']}>{p.description}</p>
+          <p class="mt-6 text-4xl font-extrabold tracking-tight">{p.price}</p>
+          <p class:list={['mt-1 min-h-5 text-sm', p.featured ? 'text-navy-300' : 'text-navy-400']}>{p.period ?? ''}</p>
+          <a href={p.cta.href} class:list={['btn mt-6', p.featured ? 'btn-primary' : 'btn-secondary']}>
+            {p.cta.label}
+          </a>
+          <ul class:list={['mt-8 space-y-3 border-t pt-6', p.featured ? 'border-white/15' : 'border-navy-100']}>
+            {p.features.map((f) => (
+              <li class="flex items-start gap-2 text-sm">
+                <Icon
+                  name="check"
+                  class={`mt-0.5 h-4 w-4 shrink-0 ${p.featured ? 'text-brand-300' : 'text-brand-600'}`}
+                  strokeWidth={2.5}
+                />
+                <span class={p.featured ? 'text-navy-100' : 'text-navy-600'}>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-navy-500">{pricing.note}</p>
+  </div>
+</section>

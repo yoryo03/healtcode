@@ -1,0 +1,19 @@
+---
+import { announcement } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+{
+  announcement && (
+    <div class="bg-navy-800 text-white">
+      <div class="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-xs sm:text-sm">
+        <Icon name="sparkles" class="hidden h-4 w-4 text-brand-300 sm:block" />
+        <span>{announcement.text}</span>
+        <a href={announcement.href} class="inline-flex items-center gap-1 font-semibold text-brand-300 underline-offset-4 hover:underline">
+          {announcement.cta}
+          <Icon name="arrow-right" class="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </div>
+  )
+}
