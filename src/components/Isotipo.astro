@@ -1,0 +1,38 @@
+---
+/**
+ * Isotipo de HealthCode (los cuatro cuadrantes del logo), extraído de public/icon-white.svg.
+ * - color: navy + verde (fondos claros)
+ * - white: blanco + verde (fondos oscuros)
+ * - ghost: un solo color (currentColor), relleno
+ * - outline: solo el contorno (currentColor), para marcas de agua decorativas
+ */
+interface Props {
+  class?: string;
+  variant?: 'color' | 'white' | 'ghost' | 'outline';
+}
+const { class: className = 'h-8 w-8', variant = 'color' } = Astro.props;
+
+const fills = {
+  color: ['fill-navy-800', 'fill-brand-600'],
+  white: ['fill-white', 'fill-brand-600'],
+  ghost: ['fill-current', 'fill-current'],
+  outline: ['', ''],
+}[variant];
+const stroke =
+  variant === 'outline'
+    ? { fill: 'none', stroke: 'currentColor', 'stroke-width': 1.5, 'vector-effect': 'non-scaling-stroke' }
+    : {};
+---
+
+<svg class={className} viewBox="227.39 238.14 106.6 103.77" aria-hidden="true" focusable="false">
+  <path
+    class={fills[0]}
+    {...stroke}
+    d="M270.79 240.14h-20.85a20.55 20.55 0 0 0-20.55 20.55v20.85h41.4Zm-41.39 58.38v20.86c0 11.34 9.2 20.54 20.54 20.54h20.85v-41.4Zm0 0"
+  ></path>
+  <path
+    class={fills[1]}
+    {...stroke}
+    d="M332 298.52h-41.4v41.4h20.85c11.35 0 20.55-9.2 20.55-20.55zm0-37.82c0-11.36-9.2-20.56-20.55-20.56h-20.84v41.4H332Zm0 0"
+  ></path>
+</svg>

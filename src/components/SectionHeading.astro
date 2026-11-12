@@ -1,18 +1,27 @@
 ---
+import Highlight from './Highlight.astro';
+
 interface Props {
   eyebrow?: string;
   title: string;
+  /** Parte del título que se pinta en verde. */
+  highlight?: string;
   subtitle?: string;
   align?: 'center' | 'left';
   dark?: boolean;
 }
-const { eyebrow, title, subtitle, align = 'center', dark = false } = Astro.props;
+const { eyebrow, title, highlight, subtitle, align = 'center', dark = false } = Astro.props;
 ---
 
-<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center']}>
-  {eyebrow && <span class:list={['eyebrow', dark && 'bg-white/10 text-brand-200']}>{eyebrow}</span>}
-  <h2 class:list={['mt-4 text-3xl font-bold tracking-tight md:text-4xl', dark ? 'text-white' : 'text-navy-800']}>
-    {title}
+<div class:list={['max-w-3xl', align === 'center' && 'mx-auto text-center']} data-reveal>
+  {eyebrow && <span class:list={['eyebrow', dark && 'eyebrow-dark']}>{eyebrow}</span>}
+  <h2
+    class:list={[
+      'mt-4 text-3xl leading-[1.02] font-black tracking-tight text-balance uppercase sm:text-4xl md:text-5xl',
+      dark ? 'text-white' : 'text-navy-900',
+    ]}
+  >
+    <Highlight text={title} highlight={highlight} class={dark ? 'text-mint-400' : 'text-brand-600'} />
   </h2>
-  {subtitle && <p class:list={['mt-4 text-lg', dark ? 'text-navy-200' : 'text-navy-500']}>{subtitle}</p>}
+  {subtitle && <p class:list={['mt-5 text-lg', dark ? 'text-navy-200' : 'text-navy-500']}>{subtitle}</p>}
 </div>

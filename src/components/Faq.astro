@@ -1,37 +1,133 @@
 ---
-import { faq, site } from '../data/site';
+import { faq, whatsappUrl } from '../data/site';
 import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
 import SectionHeading from './SectionHeading.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+const number = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
-<section id="faq" class="scroll-mt-28 bg-mist py-20 md:py-24">
+<section id="faq" class="scroll-mt-28 py-20 md:py-28">
   <div class="mx-auto max-w-6xl px-4">
-    <div class="grid gap-10 lg:grid-cols-3">
-      <div>
-        <SectionHeading
-          eyebrow="Preguntas frecuentes"
-          title="Preguntas frecuentes"
-          subtitle="¿Tienes otra pregunta? Te respondemos por WhatsApp o en una demostración en vivo."
-          align="left"
-        />
-        <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" class="btn btn-secondary mt-6">
-          <Icon name="message" class="h-4 w-4 text-brand-600" />
-          Escribir por WhatsApp
-        </a>
+    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} highlight={faq.highlight} subtitle={faq.subtitle} />
+
+    <!-- Escritorio: lista de preguntas a la izquierda y respuesta a la derecha -->
+    <div data-reveal class="faq-tabs mt-14 hidden gap-8 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div role="tablist" aria-orientation="vertical" aria-label={faq.title} class="space-y-3">
+        {
+          faq.items.map((item, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`faq-tab-${i}`}
+              aria-controls={`faq-panel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              class="faq-tab group flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-navy-100 bg-white px-5 py-4 text-left font-bold text-navy-800 transition hover:border-brand-300 aria-selected:border-brand-600 aria-selected:text-brand-700 aria-selected:shadow-soft"
+            >
+              <span>{item.q}</span>
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mist text-navy-500 transition group-aria-selected:bg-brand-600 group-aria-selected:text-white">
+                <Icon name="chevron-right" class="h-4 w-4" strokeWidth={2.5} />
+              </span>
+            </button>
+          ))
+        }
       </div>
-      <div class="space-y-3 lg:col-span-2">
-        {faq.map((item) => (
-          <details class="group rounded-xl border border-navy-100 bg-white px-5 py-4 open:shadow-soft">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-navy-800 [&::-webkit-details-marker]:hidden">
+
+      <div class="relative">
+        <div class="sticky top-28">
+          {
+            faq.items.map((item, i) => (
+              <div
+                role="tabpanel"
+                id={`faq-panel-${i}`}
+                aria-labelledby={`faq-tab-${i}`}
+                hidden={i !== 0}
+                class="relative overflow-hidden rounded-3xl bg-navy-900 p-10 text-white shadow-card"
+              >
+                <Isotipo variant="outline" class="pointer-events-none absolute -right-16 -bottom-16 h-64 w-64 text-white/10" />
+                <span class="relative block text-6xl leading-none font-black text-mint-400/40" aria-hidden="true">
+                  {number(i)}
+                </span>
+                <h3 class="relative mt-4 text-2xl leading-tight font-black tracking-tight text-balance uppercase">{item.q}</h3>
+                <div class="relative mt-6 border-l-4 border-mint-400 pl-5">
+                  <p class="text-lg leading-relaxed text-navy-100">{item.a}</p>
+                </div>
+                <div class="relative mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
+                  <p class="text-sm text-navy-200">{faq.panelCta}</p>
+                  <a href={whatsappUrl(faq.whatsappMessage)} target="_blank" rel="noopener" class="btn btn-whatsapp">
+                    <Icon name="whatsapp" class="h-5 w-5" />
+                    {faq.whatsappLabel}
+                  </a>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Móvil y tableta: acordeón -->
+    <div class="faq-accordion mt-12 space-y-3 lg:hidden">
+      {
+        faq.items.map((item) => (
+          <details class="group rounded-2xl border-2 border-navy-100 bg-white px-5 py-4 open:border-brand-600 open:shadow-soft">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-navy-800 [&::-webkit-details-marker]:hidden">
               {item.q}
-              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-navy-200 text-navy-500 transition group-open:rotate-45 group-open:border-brand-600 group-open:text-brand-600">
-                <Icon name="plus" class="h-4 w-4" />
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mist text-navy-500 transition group-open:rotate-90 group-open:bg-brand-600 group-open:text-white">
+                <Icon name="chevron-right" class="h-4 w-4" strokeWidth={2.5} />
               </span>
             </summary>
             <p class="mt-3 leading-relaxed text-navy-500">{item.a}</p>
           </details>
-        ))}
-      </div>
+        ))
+      }
+      <a href={whatsappUrl(faq.whatsappMessage)} target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg mt-4 w-full">
+        <Icon name="whatsapp" class="h-5 w-5" />
+        {faq.whatsappLabel}
+      </a>
     </div>
   </div>
+
+  <noscript>
+    <style is:inline>
+      .faq-tabs { display: none !important; }
+      .faq-accordion { display: block !important; }
+    </style>
+  </noscript>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </section>
+
+<script>
+  // Pestañas verticales de la sección de preguntas (escritorio). Flechas ↑/↓, Inicio y Fin para moverse.
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq-tab'));
+  const select = (index: number, focus = false) => {
+    tabs.forEach((tab, j) => {
+      const on = j === index;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      const panel = document.getElementById(tab.getAttribute('aria-controls') ?? '');
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tabs[index]?.focus();
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(i));
+    tab.addEventListener('keydown', (e) => {
+      const moves: Record<string, number> = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 };
+      if (e.key in moves) {
+        e.preventDefault();
+        select((moves[e.key] + tabs.length) % tabs.length, true);
+      }
+    });
+  });
+</script>

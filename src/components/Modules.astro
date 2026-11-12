@@ -1,0 +1,74 @@
+---
+import { modules } from '../data/site';
+import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section id="modulos" class="scroll-mt-28 bg-mist py-20 md:py-24">
+  <div class="mx-auto max-w-6xl px-4">
+    <SectionHeading eyebrow={modules.eyebrow} title={modules.title} highlight={modules.highlight} subtitle={modules.subtitle} />
+
+    <div class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
+      {
+        modules.items.map((m, i) => (
+          <div data-reveal style={`--reveal-delay:${(i % 2) * 100}ms`}>
+            <article
+              class:list={[
+                'relative flex h-full flex-col gap-6 overflow-hidden rounded-3xl p-7 transition hover:-translate-y-1 sm:flex-row sm:p-8',
+                m.featured
+                  ? 'bg-linear-to-br from-brand-600 via-brand-700 to-navy-900 text-white shadow-glow'
+                  : 'border border-navy-100 bg-white text-navy-900 hover:shadow-soft',
+              ]}
+            >
+              {m.featured && (
+                <Isotipo variant="outline" class="pointer-events-none absolute -right-14 -bottom-14 h-56 w-56 text-white/20" />
+              )}
+              <span
+                class:list={[
+                  'relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl sm:h-20 sm:w-20',
+                  m.featured ? 'bg-white/15 text-white ring-1 ring-white/25' : 'bg-navy-900 text-mint-300',
+                ]}
+              >
+                <Icon name={m.icon} class="h-8 w-8 sm:h-9 sm:w-9" strokeWidth={1.6} />
+              </span>
+
+              <div class="relative flex flex-1 flex-col">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-lg font-black tracking-tight uppercase">{m.title}</h3>
+                  {m.badge && (
+                    <span
+                      class:list={[
+                        'rounded-full px-2.5 py-0.5 text-[10px] font-black tracking-wider uppercase',
+                        m.featured ? 'bg-mint-400 text-navy-950' : 'bg-brand-600 text-white',
+                      ]}
+                    >
+                      {m.badge}
+                    </span>
+                  )}
+                </div>
+                <p class:list={['mt-2 text-sm leading-relaxed', m.featured ? 'text-brand-50' : 'text-navy-500']}>{m.description}</p>
+                <ul class="mt-4 space-y-2">
+                  {m.bullets.map((b) => (
+                    <li class:list={['flex items-start gap-2 text-sm', m.featured ? 'text-white' : 'text-navy-600']}>
+                      <Icon
+                        name="check"
+                        class={`mt-0.5 h-4 w-4 shrink-0 ${m.featured ? 'text-mint-300' : 'text-brand-600'}`}
+                        strokeWidth={2.5}
+                      />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+                <a href={modules.cta.href} class:list={['btn btn-sm mt-6 self-start', m.featured ? 'btn-white' : 'btn-dark']}>
+                  {modules.cta.label}
+                  <Icon name="arrow-right" class="h-3.5 w-3.5" strokeWidth={2.5} />
+                </a>
+              </div>
+            </article>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

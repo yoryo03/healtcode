@@ -1,0 +1,101 @@
+---
+import { rda, whatsappUrl } from '../data/site';
+import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
+import Highlight from './Highlight.astro';
+---
+
+<section id="rda" class="scroll-mt-28 px-4 pt-16 pb-6 md:pt-24">
+  <div
+    data-reveal
+    class="relative isolate mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-navy-900 px-6 py-12 text-white shadow-card sm:px-10 md:px-14 md:py-16"
+  >
+    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute -top-32 -left-24 h-96 w-96 rounded-full bg-brand-600/50 blur-3xl"></div>
+      <div class="absolute -right-20 -bottom-40 h-[28rem] w-[28rem] rounded-full bg-mint-400/20 blur-3xl"></div>
+      <div class="pattern-grid fade-mask absolute inset-0"></div>
+      <Isotipo variant="outline" class="absolute -top-28 -right-28 h-96 w-96 text-white/10" />
+    </div>
+
+    <div class="grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+      <div class="min-w-0">
+        <span class="inline-flex items-center gap-2 rounded-full bg-mint-400 px-3 py-1 text-xs font-black tracking-wider text-navy-950 uppercase">
+          <Icon name="sparkles" class="h-3.5 w-3.5" strokeWidth={2.25} />
+          {rda.badge}
+        </span>
+        <h2 class="mt-5 text-3xl leading-[1.02] font-black tracking-tight text-balance uppercase sm:text-4xl md:text-5xl">
+          <Highlight text={rda.title} highlight={rda.highlight} class="text-mint-400" />
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-200">{rda.subtitle}</p>
+        <ul class="mt-7 space-y-3">
+          {
+            rda.bullets.map((b) => (
+              <li class="flex items-start gap-3 font-medium text-navy-50">
+                <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-mint-400 text-navy-950">
+                  <Icon name="check" class="h-3 w-3" strokeWidth={3} />
+                </span>
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href={rda.primaryCta.href} class="btn btn-mint">
+            {rda.primaryCta.label}
+            <Icon name="arrow-right" class="h-4 w-4" strokeWidth={2.5} />
+          </a>
+          <a href={whatsappUrl(rda.whatsappMessage)} target="_blank" rel="noopener" class="btn btn-whatsapp">
+            <Icon name="whatsapp" class="h-5 w-5" />
+            {rda.whatsappLabel}
+          </a>
+        </div>
+      </div>
+
+      <!-- Ilustración del RDA (solo visual) -->
+      <div class="relative mx-auto w-full max-w-md min-w-0 py-8" aria-hidden="true">
+        <div class="-rotate-2 rounded-3xl bg-white p-6 text-navy-800 shadow-card sm:p-7">
+          <div class="flex items-center gap-3">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-navy-900 text-mint-300">
+              <Icon name="share" class="h-6 w-6" />
+            </span>
+            <div class="min-w-0">
+              <p class="truncate font-black text-navy-900">{rda.doc.titulo}</p>
+              <p class="truncate text-xs font-medium text-navy-400">{rda.doc.codigo}</p>
+            </div>
+          </div>
+          <p class="mt-5 rounded-xl bg-mist px-3 py-2 text-sm font-semibold text-navy-700">{rda.doc.paciente}</p>
+          <ul class="mt-4 space-y-2.5">
+            {
+              rda.doc.items.map((it) => (
+                <li class="flex items-center justify-between gap-3 text-sm">
+                  <span class="text-navy-600">{it}</span>
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
+                    <Icon name="check" class="h-3 w-3" strokeWidth={3} />
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-6 flex items-center justify-between gap-3 border-t border-navy-100 pt-4 text-xs">
+            <span class="font-bold text-brand-700">{rda.doc.validado}</span>
+            <span class="shrink-0 text-navy-400">{rda.doc.hora}</span>
+          </div>
+        </div>
+
+        <div
+          class="animate-float absolute -top-1 -right-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-mint-400 text-navy-950 shadow-glow-mint motion-reduce:animate-none sm:-right-5"
+        >
+          <Icon name="send" class="h-8 w-8" strokeWidth={2} />
+        </div>
+        <div
+          class="animate-float-slow absolute -bottom-3 -left-2 flex items-center gap-2 rounded-2xl bg-navy-800 px-4 py-3 text-sm font-bold text-white shadow-card ring-1 ring-white/15 motion-reduce:animate-none sm:-left-6"
+        >
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-mint-400 text-navy-950">
+            <Icon name="check" class="h-3.5 w-3.5" strokeWidth={3} />
+          </span>
+          {rda.doc.estado}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

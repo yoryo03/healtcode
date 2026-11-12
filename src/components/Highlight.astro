@@ -1,0 +1,16 @@
+---
+/** Pinta de otro color la parte `highlight` dentro de `text`. Si no la encuentra, muestra el texto tal cual. */
+interface Props {
+  text: string;
+  highlight?: string;
+  class?: string;
+}
+const { text, highlight, class: className = 'text-brand-600' } = Astro.props;
+
+const i = highlight ? text.indexOf(highlight) : -1;
+const before = i >= 0 ? text.slice(0, i) : text;
+const mark = i >= 0 && highlight ? text.slice(i, i + highlight.length) : '';
+const after = i >= 0 && highlight ? text.slice(i + highlight.length) : '';
+---
+
+{before}{mark && <span class={className}>{mark}</span>}{after}

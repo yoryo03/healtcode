@@ -1,36 +1,50 @@
 ---
-import { site, footer } from '../data/site';
+import { site, footer, ui, whatsappUrl } from '../data/site';
+import Icon from './Icon.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer class="bg-navy-950 text-navy-300">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-5">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-5">
     <div class="md:col-span-2">
       <img src="/logo-white.svg" alt={site.name} class="h-7 w-auto" width="159" height="40" />
-      <p class="mt-4 max-w-sm text-sm leading-relaxed">{site.tagline}.</p>
+      <p class="mt-5 max-w-sm text-sm leading-relaxed">{site.tagline}.</p>
       <p class="mt-4 text-sm">{site.city}</p>
       <p class="text-sm">
         <a href={`mailto:${site.email}`} class="hover:text-white">{site.email}</a> ·{' '}
         <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="hover:text-white">{site.phone}</a>
       </p>
+      <a href={whatsappUrl()} target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm mt-6">
+        <Icon name="whatsapp" class="h-4 w-4" />
+        {ui.whatsapp}
+      </a>
     </div>
-    {footer.columns.map((col) => (
-      <div>
-        <h3 class="text-sm font-semibold text-white">{col.title}</h3>
-        <ul class="mt-4 space-y-2.5">
-          {col.links.map((l) => (
-            <li>
-              <a href={l.href} class="text-sm hover:text-white">{l.label}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ))}
+    {
+      footer.columns.map((col) => (
+        <div>
+          <h3 class="text-sm font-black tracking-wider text-white uppercase">{col.title}</h3>
+          <ul class="mt-4 space-y-2.5">
+            {col.links.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-sm hover:text-white"
+                  {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
   <div class="border-t border-white/10">
-    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-      <p>© {year} {site.legalName}. Todos los derechos reservados.</p>
-      <p>Hecho en Colombia para el sector salud.</p>
+    <!-- pb extra para que el botón flotante de WhatsApp no tape el texto -->
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 pt-6 pb-28 text-xs sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.legalName}. {footer.rights}</p>
+      <p>{footer.madeIn}</p>
     </div>
   </div>
 </footer>

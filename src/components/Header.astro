@@ -1,47 +1,68 @@
 ---
-import { site, nav, hero } from '../data/site';
+import { site, nav, hero, ui } from '../data/site';
 import Icon from './Icon.astro';
 ---
 
-<header class="sticky top-0 z-50 border-b border-navy-100 bg-white/90 backdrop-blur">
-  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-    <a href="/" class="flex items-center" aria-label={`${site.name}, inicio`}>
-      <img src="/logo.svg" alt={site.name} class="h-7 w-auto" width="159" height="40" />
+<header class="sticky top-0 z-50 border-b border-white/10 bg-navy-950/90 text-white backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4">
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${site.name}, inicio`}>
+      <img src="/logo-white.svg" alt={site.name} class="h-7 w-auto" width="159" height="40" />
     </a>
 
-    <nav class="hidden items-center gap-7 lg:flex" aria-label="Principal">
-      {nav.map((item) => (
-        <a href={item.href} class="text-sm font-medium text-navy-600 transition hover:text-brand-700">
-          {item.label}
-        </a>
-      ))}
+    <nav class="hidden items-center gap-6 lg:flex" aria-label={ui.mainNav}>
+      {
+        nav.map((item) => (
+          <a href={item.href} class="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-200 transition hover:text-white">
+            {item.label}
+            {item.badge && (
+              <span class="rounded-full bg-mint-400 px-1.5 py-0.5 text-[9px] leading-none font-black tracking-wider text-navy-950 uppercase">
+                {item.badge}
+              </span>
+            )}
+          </a>
+        ))
+      }
     </nav>
 
-    <div class="hidden items-center gap-3 lg:flex">
-      <a href={site.loginUrl} class="text-sm font-semibold text-navy-700 hover:text-brand-700">Ingresar</a>
-      <a href={hero.primaryCta.href} class="btn btn-primary px-4 py-2">{hero.primaryCta.label}</a>
+    <div class="hidden items-center gap-2 lg:flex">
+      <a href={site.loginUrl} class="btn btn-sm btn-outline-white">{ui.login}</a>
+      <a href={hero.primaryCta.href} class="btn btn-sm btn-mint">{hero.primaryCta.label}</a>
     </div>
 
     <button
       id="menu-btn"
-      class="rounded-lg p-2 text-navy-700 hover:bg-navy-50 lg:hidden"
-      aria-label="Abrir menú"
+      type="button"
+      class="rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
+      aria-label={ui.openMenu}
       aria-expanded="false"
       aria-controls="mobile-menu"
+      data-open-label={ui.openMenu}
+      data-close-label={ui.closeMenu}
     >
       <Icon name="menu" class="h-6 w-6" />
     </button>
   </div>
 
-  <nav id="mobile-menu" class="hidden border-t border-navy-100 bg-white px-4 py-4 lg:hidden" aria-label="Principal móvil">
-    {nav.map((item) => (
-      <a href={item.href} class="block rounded-lg px-2 py-2.5 font-medium text-navy-700 hover:bg-navy-50">
-        {item.label}
-      </a>
-    ))}
-    <div class="mt-3 flex flex-col gap-2 border-t border-navy-100 pt-4">
-      <a href={hero.primaryCta.href} class="btn btn-primary">{hero.primaryCta.label}</a>
-      <a href={site.loginUrl} class="btn btn-secondary">Ingresar</a>
+  <nav
+    id="mobile-menu"
+    class="hidden max-h-[calc(100dvh_-_4rem)] overflow-y-auto border-t border-white/10 bg-navy-950 px-4 py-4 lg:hidden"
+    aria-label={ui.mainNav}
+  >
+    {
+      nav.map((item) => (
+        <a href={item.href} class="flex items-center gap-2 rounded-lg px-2 py-2.5 font-semibold text-navy-100 hover:bg-white/5">
+          {item.label}
+          {item.badge && (
+            <span class="rounded-full bg-mint-400 px-1.5 py-0.5 text-[9px] leading-none font-black tracking-wider text-navy-950 uppercase">
+              {item.badge}
+            </span>
+          )}
+        </a>
+      ))
+    }
+    <div class="mt-3 flex flex-col gap-2 border-t border-white/10 pt-4">
+      <a href={hero.primaryCta.href} class="btn btn-mint">{hero.primaryCta.label}</a>
+      <a href={site.loginUrl} class="btn btn-outline-white">{ui.login}</a>
     </div>
   </nav>
 </header>
@@ -52,7 +73,8 @@ import Icon from './Icon.astro';
   const setOpen = (open: boolean) => {
     menu?.classList.toggle('hidden', !open);
     btn?.setAttribute('aria-expanded', String(open));
-    btn?.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    const label = open ? btn?.dataset.closeLabel : btn?.dataset.openLabel;
+    if (label) btn?.setAttribute('aria-label', label);
   };
   btn?.addEventListener('click', () => setOpen(menu?.classList.contains('hidden') ?? false));
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));

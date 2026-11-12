@@ -1,0 +1,33 @@
+---
+/** Recuadro con botón de WhatsApp para poner entre secciones. */
+import { whatsappUrl } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  label: string;
+  message: string;
+  dark?: boolean;
+  class?: string;
+}
+const { title, subtitle, label, message, dark = false, class: className } = Astro.props;
+---
+
+<div data-reveal class:list={['mx-auto max-w-4xl', className]}>
+  <div
+    class:list={[
+      'flex flex-col items-start gap-6 rounded-3xl p-7 sm:p-9 md:flex-row md:items-center md:justify-between',
+      dark ? 'bg-white/5 ring-1 ring-white/15' : 'bg-white shadow-soft ring-1 ring-navy-100',
+    ]}
+  >
+    <div>
+      <p class:list={['text-xl font-black tracking-tight sm:text-2xl', dark ? 'text-white' : 'text-navy-900']}>{title}</p>
+      <p class:list={['mt-2', dark ? 'text-navy-200' : 'text-navy-500']}>{subtitle}</p>
+    </div>
+    <a href={whatsappUrl(message)} target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg shrink-0">
+      <Icon name="whatsapp" class="h-5 w-5" />
+      {label}
+    </a>
+  </div>
+</div>

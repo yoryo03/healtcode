@@ -1,27 +1,164 @@
 ---
-import { steps } from '../data/site';
+import { howItWorks, ctaBoxes } from '../data/site';
+import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
 import SectionHeading from './SectionHeading.astro';
+import CtaBox from './CtaBox.astro';
+
+const { steps, diagram } = howItWorks;
+const laneOf = (id: string) => diagram.actors.findIndex((a) => a.id === id);
+const labelOf = (id: string) => diagram.actors.find((a) => a.id === id)?.label ?? id;
+// Cada carril ocupa 2 de las 10 columnas, así las flechas salen y llegan al centro del carril.
+const messages = diagram.messages.map((m) => {
+  const a = laneOf(m.from);
+  const b = laneOf(m.to);
+  return {
+    ...m,
+    toRight: b > a,
+    incoming: m.to === 'hc',
+    column: `${Math.min(a, b) * 2 + 2} / ${Math.max(a, b) * 2 + 2}`,
+  };
+});
 ---
 
-<section id="como-funciona" class="scroll-mt-28 bg-navy-800 py-20 text-white md:py-24">
+<section id="como-funciona" class="relative isolate scroll-mt-28 overflow-hidden bg-navy-950 py-20 text-white md:py-28">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -top-40 left-1/2 h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-brand-600/30 blur-3xl"></div>
+    <div class="pattern-grid fade-mask absolute inset-0"></div>
+  </div>
+
   <div class="mx-auto max-w-6xl px-4">
-    <SectionHeading
-      eyebrow="Cómo funciona"
-      title="De la cita a la nómina en cuatro pasos"
-      subtitle="Un solo flujo para toda la institución. Sin reprocesos ni hojas de cálculo."
-      dark
-    />
-    <ol class="relative mt-14 grid gap-8 md:grid-cols-4">
-      <div class="absolute top-6 right-[12.5%] left-[12.5%] hidden h-px bg-white/15 md:block" aria-hidden="true"></div>
-      {steps.map((s, i) => (
-        <li class="relative">
-          <span class="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white ring-8 ring-navy-800">
-            {i + 1}
-          </span>
-          <h3 class="mt-5 text-lg font-semibold">{s.title}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-navy-200">{s.description}</p>
-        </li>
-      ))}
+    <SectionHeading eyebrow={howItWorks.eyebrow} title={howItWorks.title} highlight={howItWorks.highlight} subtitle={howItWorks.subtitle} dark />
+
+    <ol class="relative mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <li class="pointer-events-none absolute top-10 right-[12.5%] left-[12.5%] hidden border-t-2 border-dashed border-white/15 lg:block" aria-hidden="true"></li>
+      {
+        steps.map((s, i) => (
+          <li data-reveal style={`--reveal-delay:${i * 110}ms`} class="relative text-center">
+            <div class="relative mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-linear-to-br from-brand-500 to-brand-700 shadow-glow ring-8 ring-navy-950">
+              <Icon name={s.icon} class="h-9 w-9 text-white" strokeWidth={1.6} />
+              <span class="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-mint-400 text-xs font-black text-navy-950">
+                {i + 1}
+              </span>
+            </div>
+            <h3 class="mt-6 text-lg font-black uppercase">{s.title}</h3>
+            <p class="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-navy-200">{s.description}</p>
+          </li>
+        ))
+      }
     </ol>
+
+    <!-- Diagrama de secuencia -->
+    <div data-reveal class="mt-20 rounded-[2rem] bg-white p-6 text-navy-800 shadow-card sm:p-10">
+      <div class="text-center">
+        <h3 class="text-2xl font-black tracking-tight text-balance text-navy-900 uppercase md:text-3xl">{diagram.title}</h3>
+        <p class="mt-2 text-navy-500">{diagram.subtitle}</p>
+      </div>
+
+      <!-- Escritorio: carriles y flechas -->
+      <div class="mt-10 hidden md:block">
+        <div class="grid grid-cols-5">
+          {
+            diagram.actors.map((a) => (
+              <div class="flex flex-col items-center gap-2 text-center">
+                <span
+                  class:list={[
+                    'flex h-14 w-14 items-center justify-center rounded-2xl',
+                    a.icon === 'logo' ? 'bg-navy-900 shadow-soft' : 'bg-mist text-navy-800 ring-1 ring-navy-100',
+                  ]}
+                >
+                  {a.icon === 'logo' ? <Isotipo variant="white" class="h-7 w-7" /> : <Icon name={a.icon} class="h-7 w-7" />}
+                </span>
+                <span class="text-xs font-black tracking-wide text-navy-900 uppercase">{a.label}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="relative mt-4">
+          {
+            diagram.actors.map((_, i) => (
+              <span
+                class="absolute top-0 bottom-0 border-l-2 border-dashed border-navy-200"
+                style={`left: calc(${(i * 2 + 1) * 10}% - 1px)`}
+                aria-hidden="true"
+              />
+            ))
+          }
+          <ol class="relative space-y-7 py-5">
+            {
+              messages.map((m, n) => (
+                <li class="grid grid-cols-10">
+                  <div class="relative px-1" style={`grid-column: ${m.column}`}>
+                    <div class:list={['relative h-0.5', m.incoming ? 'bg-navy-400' : 'bg-brand-600']}>
+                      <svg
+                        class:list={[
+                          'absolute top-1/2 h-3 w-3 -translate-y-1/2',
+                          m.toRight ? '-right-1' : '-left-1 rotate-180',
+                          m.incoming ? 'text-navy-400' : 'text-brand-600',
+                        ]}
+                        viewBox="0 0 10 10"
+                        aria-hidden="true"
+                      >
+                        <path d="M0 0 10 5 0 10z" fill="currentColor" />
+                      </svg>
+                      <span
+                        class:list={[
+                          'absolute top-1/2 left-1/2 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-xs font-black text-white ring-4 ring-white',
+                          m.incoming ? 'bg-navy-500' : 'bg-brand-600',
+                        ]}
+                      >
+                        {n + 1}
+                      </span>
+                    </div>
+                    <!-- El fondo blanco tapa las líneas punteadas que pasan por detrás del texto -->
+                    <div class="mt-6 text-center">
+                      <span class="inline-block bg-white px-2">
+                        <span class="block text-xs font-black tracking-wide text-navy-900 uppercase">{m.title}</span>
+                        <span class="block text-xs text-navy-500">{m.detail}</span>
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <!-- Móvil: lista de pasos -->
+      <ol class="mt-8 space-y-3 md:hidden">
+        {
+          messages.map((m, n) => (
+            <li class="flex gap-4 rounded-2xl bg-mist p-4">
+              <span
+                class:list={[
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black text-white',
+                  m.incoming ? 'bg-navy-500' : 'bg-brand-600',
+                ]}
+              >
+                {n + 1}
+              </span>
+              <div>
+                <p class="flex flex-wrap items-center gap-1 text-[11px] font-bold tracking-wide text-brand-700 uppercase">
+                  {labelOf(m.from)}
+                  <Icon name="arrow-right" class="h-3 w-3" strokeWidth={2.5} />
+                  {labelOf(m.to)}
+                </p>
+                <p class="mt-1 font-bold text-navy-900">{m.title}</p>
+                <p class="text-sm text-navy-500">{m.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="mt-8 flex items-center justify-center gap-2 text-center text-sm font-bold text-brand-700">
+        <Icon name="activity" class="h-4 w-4 shrink-0" strokeWidth={2.25} />
+        {diagram.note}
+      </p>
+    </div>
+
+    <CtaBox {...ctaBoxes.flow} dark class="mt-14" />
   </div>
 </section>

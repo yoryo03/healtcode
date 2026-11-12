@@ -1,30 +1,58 @@
 ---
 import { compliance } from '../data/site';
 import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
 import SectionHeading from './SectionHeading.astro';
+
+const authorityClass: Record<string, string> = {
+  DIAN: 'bg-navy-900 text-white',
+  'Ministerio de Salud': 'bg-brand-50 text-brand-700',
+  SIC: 'bg-navy-100 text-navy-700',
+};
 ---
 
-<section id="normativa" class="scroll-mt-28 py-20 md:py-24">
+<section id="normativa" class="scroll-mt-28 py-20 md:py-28">
   <div class="mx-auto max-w-6xl px-4">
-    <SectionHeading
-      eyebrow="Normativa"
-      title="Normativa que cumple el software"
-      subtitle="Un prestador en Colombia responde por su factura, sus RIPS, su nómina y su historia clínica. HealthCode se mantiene al día por ti."
-    />
-    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {compliance.map((c) => (
-        <div class="flex gap-4 rounded-2xl border border-navy-100 p-6">
-          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
-            <Icon name="shield" class="h-5 w-5" />
+    <SectionHeading eyebrow={compliance.eyebrow} title={compliance.title} highlight={compliance.highlight} subtitle={compliance.subtitle} />
+
+    <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div data-reveal>
+        <div class="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl bg-linear-to-br from-brand-600 to-brand-800 p-7 text-white shadow-glow">
+          <Isotipo variant="outline" class="pointer-events-none absolute -top-10 -right-10 h-40 w-40 text-white/20" />
+          <span class="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25">
+            <Icon name="shield" class="h-7 w-7" />
           </span>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-navy-400">{c.authority}</p>
-            <h3 class="mt-1 font-semibold text-navy-800">{c.title}</h3>
-            <p class="mt-1 text-sm font-medium text-brand-700">{c.reference}</p>
-            <p class="mt-2 text-sm leading-relaxed text-navy-500">{c.description}</p>
+          <div class="relative mt-10">
+            <p class="text-xl leading-tight font-black uppercase">{compliance.promo.title}</p>
+            <p class="mt-3 text-sm leading-relaxed text-brand-50">{compliance.promo.description}</p>
           </div>
         </div>
-      ))}
+      </div>
+
+      {
+        compliance.items.map((c, i) => (
+          <div data-reveal style={`--reveal-delay:${((i + 1) % 4) * 80}ms`}>
+            <div class="flex h-full flex-col rounded-3xl bg-white p-6 ring-1 ring-navy-100 transition hover:-translate-y-1 hover:shadow-soft">
+              <div class="flex items-center justify-between gap-2">
+                <span
+                  class:list={[
+                    'rounded-full px-2.5 py-1 text-[10px] font-black tracking-wider uppercase',
+                    authorityClass[c.authority] ?? 'bg-navy-100 text-navy-700',
+                  ]}
+                >
+                  {c.authority}
+                </span>
+                {c.badge && (
+                  <span class="rounded-full bg-mint-400 px-2 py-0.5 text-[10px] font-black text-navy-950 uppercase">{c.badge}</span>
+                )}
+              </div>
+              <h3 class="mt-5 text-lg font-black tracking-tight text-navy-900">{c.title}</h3>
+              <p class="mt-1 text-sm font-bold text-brand-700">{c.reference}</p>
+              <p class="mt-3 text-sm leading-relaxed text-navy-500">{c.description}</p>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

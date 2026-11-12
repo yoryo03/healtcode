@@ -16,7 +16,7 @@ const { title = `${site.name} · ${site.tagline}`, description = site.descriptio
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#19253a" />
+    <meta name="theme-color" content="#0b111c" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -25,12 +25,38 @@ const { title = `${site.name} · ${site.tagline}`, description = site.descriptio
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
   </head>
   <body class="bg-white font-sans text-navy-700 antialiased">
     <slot />
+
+    <script>
+      // Aparición suave de los bloques con data-reveal al hacer scroll.
+      // Solo se activa con JavaScript y si el usuario no pidió reducir el movimiento.
+      const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (items.length > 0 && 'IntersectionObserver' in window && !reduce) {
+        // Lo que ya está en pantalla al cargar se muestra de una vez (sin parpadeo).
+        items.forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-visible');
+        });
+        document.documentElement.classList.add('js');
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        items.filter((el) => !el.classList.contains('is-visible')).forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>

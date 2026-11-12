@@ -5,13 +5,18 @@ import Icon from './Icon.astro';
 
 {
   announcement && (
-    <div class="bg-navy-800 text-white">
-      <div class="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-xs sm:text-sm">
-        <Icon name="sparkles" class="hidden h-4 w-4 text-brand-300 sm:block" />
-        <span>{announcement.text}</span>
-        <a href={announcement.href} class="inline-flex items-center gap-1 font-semibold text-brand-300 underline-offset-4 hover:underline">
+    <div class="bg-linear-to-r from-brand-800 via-brand-600 to-brand-800 text-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2 text-center text-xs sm:text-sm">
+        <span class="rounded-full bg-white px-2 py-0.5 text-[10px] font-black tracking-wider text-brand-700 uppercase sm:text-[11px]">
+          {announcement.label}
+        </span>
+        <span class="font-medium">{announcement.text}</span>
+        <a
+          href={announcement.href}
+          class="inline-flex items-center gap-1 font-bold underline decoration-white/50 underline-offset-4 hover:decoration-white"
+        >
           {announcement.cta}
-          <Icon name="arrow-right" class="h-3.5 w-3.5" />
+          <Icon name="arrow-right" class="h-3.5 w-3.5" strokeWidth={2.5} />
         </a>
       </div>
     </div>

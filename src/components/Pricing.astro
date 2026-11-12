@@ -1,47 +1,58 @@
 ---
 import { pricing } from '../data/site';
 import Icon from './Icon.astro';
+import Isotipo from './Isotipo.astro';
 import SectionHeading from './SectionHeading.astro';
 ---
 
-<section id="planes" class="scroll-mt-28 bg-mist py-20 md:py-24">
+<section id="planes" class="scroll-mt-28 bg-mist py-20 md:py-28">
   <div class="mx-auto max-w-6xl px-4">
-    <SectionHeading eyebrow="Planes" title={pricing.title} subtitle={pricing.subtitle} />
+    <SectionHeading eyebrow={pricing.eyebrow} title={pricing.title} highlight={pricing.highlight} subtitle={pricing.subtitle} />
 
-    <div class="mt-14 grid items-start gap-6 lg:grid-cols-3">
-      {pricing.plans.map((p) => (
-        <div
-          class:list={[
-            'relative flex flex-col rounded-2xl p-8',
-            p.featured ? 'bg-navy-800 text-white shadow-soft ring-1 ring-navy-800 lg:-mt-4 lg:mb-4' : 'border border-navy-100 bg-white',
-          ]}
-        >
-          {p.featured && (
-            <span class="absolute -top-3 left-8 rounded-full bg-brand-600 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
-              Recomendado
-            </span>
-          )}
-          <h3 class="text-lg font-semibold">{p.name}</h3>
-          <p class:list={['mt-1 text-sm', p.featured ? 'text-navy-200' : 'text-navy-500']}>{p.description}</p>
-          <p class="mt-6 text-4xl font-extrabold tracking-tight">{p.price}</p>
-          <p class:list={['mt-1 min-h-5 text-sm', p.featured ? 'text-navy-300' : 'text-navy-400']}>{p.period ?? ''}</p>
-          <a href={p.cta.href} class:list={['btn mt-6', p.featured ? 'btn-primary' : 'btn-secondary']}>
-            {p.cta.label}
-          </a>
-          <ul class:list={['mt-8 space-y-3 border-t pt-6', p.featured ? 'border-white/15' : 'border-navy-100']}>
-            {p.features.map((f) => (
-              <li class="flex items-start gap-2 text-sm">
-                <Icon
-                  name="check"
-                  class={`mt-0.5 h-4 w-4 shrink-0 ${p.featured ? 'text-brand-300' : 'text-brand-600'}`}
-                  strokeWidth={2.5}
-                />
-                <span class={p.featured ? 'text-navy-100' : 'text-navy-600'}>{f}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div class="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-center">
+      {
+        pricing.plans.map((p, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 100}ms`} class="h-full">
+            <div
+              class:list={[
+                'relative flex h-full flex-col overflow-hidden rounded-3xl p-8',
+                p.featured
+                  ? 'bg-linear-to-br from-navy-900 via-navy-900 to-brand-800 text-white shadow-card ring-2 ring-mint-400/60 lg:py-12'
+                  : 'bg-white text-navy-800 ring-1 ring-navy-100',
+              ]}
+            >
+              {p.featured && <Isotipo variant="outline" class="pointer-events-none absolute -right-16 -bottom-16 h-64 w-64 text-white/10" />}
+              {p.featured && (
+                <span class="absolute top-6 right-6 rounded-full bg-mint-400 px-3 py-1 text-[11px] font-black tracking-wider text-navy-950 uppercase">
+                  {pricing.featuredLabel}
+                </span>
+              )}
+              <h3 class="relative text-xl font-black tracking-tight uppercase">{p.name}</h3>
+              <p class:list={['relative mt-1 max-w-[70%] text-sm', p.featured ? 'text-navy-200' : 'text-navy-500']}>{p.description}</p>
+              <p class="relative mt-7 text-[2.5rem] leading-none font-black tracking-tight">{p.price}</p>
+              <p class:list={['relative mt-2 min-h-5 text-sm', p.featured ? 'text-navy-300' : 'text-navy-400']}>{p.period ?? ''}</p>
+              <a href={p.cta.href} class:list={['btn btn-lg relative mt-7', p.featured ? 'btn-mint' : 'btn-dark']}>
+                {p.cta.label}
+              </a>
+              <ul class:list={['relative mt-8 space-y-3 border-t pt-7', p.featured ? 'border-white/15' : 'border-navy-100']}>
+                {p.features.map((f) => (
+                  <li class="flex items-start gap-3 text-sm">
+                    <span
+                      class:list={[
+                        'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full',
+                        p.featured ? 'bg-mint-400 text-navy-950' : 'bg-brand-50 text-brand-700',
+                      ]}
+                    >
+                      <Icon name="check" class="h-3 w-3" strokeWidth={3} />
+                    </span>
+                    <span class={p.featured ? 'text-navy-100' : 'text-navy-600'}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
     <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-navy-500">{pricing.note}</p>
