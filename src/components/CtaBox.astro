@@ -18,12 +18,12 @@ const { title, subtitle, label, message, dark = false, class: className } = Astr
   <div
     class:list={[
       'flex flex-col items-start gap-6 rounded-3xl p-7 sm:p-9 md:flex-row md:items-center md:justify-between',
-      dark ? 'bg-white/5 ring-1 ring-white/15' : 'bg-white shadow-soft ring-1 ring-navy-100',
+      dark ? 'bg-white/5 ring-1 ring-white/15' : 'bg-card shadow-soft ring-1 ring-line',
     ]}
   >
     <div>
-      <p class:list={['text-xl font-black tracking-tight sm:text-2xl', dark ? 'text-white' : 'text-navy-900']}>{title}</p>
-      <p class:list={['mt-2', dark ? 'text-navy-200' : 'text-navy-500']}>{subtitle}</p>
+      <p class:list={['text-xl font-black tracking-tight sm:text-2xl', dark ? 'text-white' : 'text-ink']}>{title}</p>
+      <p class:list={['mt-2', dark ? 'text-navy-200' : 'text-ink-muted']}>{subtitle}</p>
     </div>
     <a href={whatsappUrl(message)} target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg shrink-0">
       <Icon name="whatsapp" class="h-5 w-5" />

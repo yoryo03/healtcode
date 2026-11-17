@@ -4,8 +4,8 @@ import Icon from './Icon.astro';
 import Highlight from './Highlight.astro';
 
 const inputClass =
-  'mt-1.5 w-full rounded-xl border border-navy-200 bg-white px-3.5 py-2.5 text-navy-800 placeholder:text-navy-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 focus:outline-hidden';
-const labelClass = 'text-sm font-semibold text-navy-700';
+  'mt-1.5 w-full rounded-xl border border-line-strong bg-canvas px-3.5 py-2.5 text-ink placeholder:text-ink-muted focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 focus:outline-hidden';
+const labelClass = 'text-sm font-semibold text-ink-soft';
 ---
 
 <section id="demo" class="relative isolate scroll-mt-28 overflow-hidden bg-navy-950 py-20 text-white md:py-28">
@@ -54,9 +54,9 @@ const labelClass = 'text-sm font-semibold text-navy-700';
     <!-- Sin backend por ahora: al enviar abre el cliente de correo. Se puede conectar a Formspree, Netlify Forms, etc. -->
     <div data-reveal style="--reveal-delay:120ms" class="relative min-w-0">
       <div class="absolute -inset-1 -z-10 rounded-[1.75rem] bg-linear-to-br from-mint-400/50 to-brand-600/50 blur-xl" aria-hidden="true"></div>
-      <form id="demo-form" class="rounded-3xl bg-white p-6 text-navy-800 shadow-card sm:p-9">
-        <h3 class="text-2xl font-black tracking-tight text-navy-900 uppercase">{demo.formTitle}</h3>
-        <p class="mt-1 text-sm text-navy-500">{demo.formSubtitle}</p>
+      <form id="demo-form" class="rounded-3xl bg-card p-6 text-ink shadow-card sm:p-9 dark:ring-1 dark:ring-white/10">
+        <h3 class="text-2xl font-black tracking-tight text-ink uppercase">{demo.formTitle}</h3>
+        <p class="mt-1 text-sm text-ink-muted">{demo.formSubtitle}</p>
 
         <div class="mt-7 grid gap-4 sm:grid-cols-2">
           <div>
@@ -91,7 +91,7 @@ const labelClass = 'text-sm font-semibold text-navy-700';
           {demo.submitLabel}
           <Icon name="arrow-right" class="h-4 w-4" strokeWidth={2.5} />
         </button>
-        <p class="mt-3 text-center text-xs text-navy-400">{demo.privacyNote}</p>
+        <p class="mt-3 text-center text-xs text-ink-muted">{demo.privacyNote}</p>
       </form>
     </div>
   </div>

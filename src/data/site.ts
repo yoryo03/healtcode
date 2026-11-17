@@ -1,21 +1,13 @@
 // ============================================================
 //  CONTENIDO DE LA LANDING DE HEALTHCODE
-//  Edita aquí los textos: los componentes solo leen este archivo.
-//  - Lo marcado con "EJEMPLO" es de relleno: reemplázalo con datos
-//    reales antes de publicar, o deja el arreglo vacío ([]) para
-//    ocultar esa sección.
-//  - `highlight` es la parte del título que se pinta en verde; debe
-//    aparecer escrita igual dentro de `title`.
-//  - Los textos son propios de HealthCode: no copies frases de otros
-//    sitios (Saludtools, Factus, etc.).
 // ============================================================
 
 export const site = {
   name: 'HealthCode',
-  legalName: 'HealthCode', // EJEMPLO: razón social para el pie de página (el brief de marca menciona "Alejandro Colmenares y Compañía")
+  legalName: 'HealthCode', // EJEMPLO: razón social para el pie de página 
   tagline: 'Software de salud con factura electrónica, RIPS, RDA y nómina',
   description:
-    'HealthCode conecta agenda, historia clínica, facturación electrónica DIAN, RIPS, RDA y nómina electrónica en una plataforma web para consultorios, clínicas e IPS de Colombia.',
+    'HealthCode conecta agenda, historia clínica, imágenes de rayos X, facturación electrónica DIAN, RIPS, RDA, cartera, tesorería, contabilidad, inventario y nómina electrónica en una plataforma web para consultorios, clínicas e IPS de Colombia.',
   email: 'comercial@healthcode.com.co', // EJEMPLO
   phone: '+57 300 000 0000', // EJEMPLO
   whatsapp: '573000000000', // EJEMPLO: indicativo + número, sin "+" ni espacios
@@ -36,6 +28,8 @@ export const ui = {
   mainNav: 'Principal',
   whatsapp: 'Escríbenos por WhatsApp',
   whatsappShort: 'WhatsApp',
+  // Botón de modo oscuro del header (luna / sol).
+  darkMode: 'Modo oscuro',
 };
 
 /** Barra superior. Pon `null` para ocultarla. */
@@ -176,16 +170,21 @@ export type Module = {
   description: string;
   bullets: string[];
   badge?: string;
-  /** Tarjeta resaltada con fondo de color. */
+  /** Tarjeta resaltada con fondo de color que ocupa toda la fila (usar en uno solo). */
   featured?: boolean;
 };
 
+// Las tarjetas van en dos columnas; el módulo `featured` ocupa la fila completa.
+// Con 12 módulos normales + 1 destacado no quedan huecos. Si agregas o quitas uno, conserva un número par de normales.
 export const modules = {
   eyebrow: 'Módulos',
   title: 'Módulos que trabajan en equipo',
   highlight: 'en equipo',
   subtitle: 'Todos comparten la información del paciente, así que nada se digita dos veces.',
-  cta: { label: 'Verlo en la demo', href: '#demo' },
+  // Botón de la tarjeta destacada y botón único al final de la sección.
+  featuredCta: { label: 'Verlo en la demo', href: '#demo' },
+  ctaNote: 'Activa solo los módulos que tu institución necesita y suma los demás cuando crezcas.',
+  cta: { label: 'Ver los módulos en una demo', href: '#demo' },
   items: [
     {
       icon: 'calendar',
@@ -210,6 +209,28 @@ export const modules = {
       ],
     },
     {
+      icon: 'xray',
+      title: 'Imágenes de rayos X',
+      description: 'Revisa las radiografías del paciente sin salir de su historia clínica y deja la lectura en la misma atención.',
+      bullets: [
+        'Visor en el navegador con zoom, brillo y contraste',
+        'Estudios guardados en la historia de cada paciente',
+        'Comparación de placas de distintas fechas',
+        'Lectura del profesional ligada a la atención',
+      ],
+    },
+    {
+      icon: 'users',
+      title: 'Portal del paciente',
+      description: 'Tus pacientes reservan, confirman y descargan sus documentos sin llamar a recepción.',
+      bullets: [
+        'Reservas en línea las 24 horas',
+        'Confirmaciones y recordatorios por WhatsApp',
+        'Descarga de facturas, órdenes y fórmulas',
+        'Encuestas de satisfacción después de la cita',
+      ],
+    },
+    {
       icon: 'file-check',
       title: 'Facturación electrónica',
       description: 'Factura a particulares, prepagadas y EPS desde la misma atención, con validación previa de la DIAN.',
@@ -217,7 +238,7 @@ export const modules = {
         'CUFE, XML y PDF enviados al pagador',
         'Notas crédito y débito en un clic',
         'Facturación por lotes con sus RIPS',
-        'Cartera y recaudo bajo control',
+        'Cada factura pasa sola a cartera y contabilidad',
       ],
     },
     {
@@ -245,6 +266,39 @@ export const modules = {
       ],
     },
     {
+      icon: 'receipt',
+      title: 'Cartera',
+      description: 'Sigue cada factura que te deben las EPS, las aseguradoras y los particulares, desde la radicación hasta el pago.',
+      bullets: [
+        'Radicación de facturas ante cada pagador',
+        'Registro y respuesta de glosas',
+        'Edades de cartera por EPS y por cliente',
+        'Abonos, pagos y recordatorios de cobro',
+      ],
+    },
+    {
+      icon: 'wallet',
+      title: 'Tesorería',
+      description: 'Controla el dinero que entra y sale de tu institución: caja, bancos y pagos en un solo lugar.',
+      bullets: [
+        'Recibos de caja y cierre diario por sede',
+        'Pagos a proveedores con comprobante de egreso',
+        'Conciliación de tus cuentas bancarias',
+        'Flujo de caja del mes y proyección',
+      ],
+    },
+    {
+      icon: 'book',
+      title: 'Contabilidad',
+      description: 'Las facturas, los pagos y la nómina se contabilizan solos, sin pasar datos a otro programa.',
+      bullets: [
+        'Comprobantes contables automáticos',
+        'Plan de cuentas y centros de costo por sede',
+        'Libros auxiliares, balance y estado de resultados',
+        'Exportación para tu contador',
+      ],
+    },
+    {
       icon: 'banknote',
       title: 'Nómina electrónica',
       description: 'Liquida y transmite a la DIAN la nómina electrónica de todo tu equipo sin salir de HealthCode.',
@@ -256,14 +310,14 @@ export const modules = {
       ],
     },
     {
-      icon: 'users',
-      title: 'Portal del paciente',
-      description: 'Tus pacientes reservan, confirman y descargan sus documentos sin llamar a recepción.',
+      icon: 'package',
+      title: 'Inventario y suministros',
+      description: 'Medicamentos, insumos y dispositivos bajo control en cada sede, con lotes y fechas de vencimiento.',
       bullets: [
-        'Reservas en línea las 24 horas',
-        'Confirmaciones y recordatorios por WhatsApp',
-        'Descarga de facturas, órdenes y fórmulas',
-        'Encuestas de satisfacción después de la cita',
+        'Entradas, salidas y traslados entre sedes',
+        'Alertas de stock mínimo y de productos por vencer',
+        'Insumos descontados desde la atención',
+        'Órdenes de compra y proveedores',
       ],
     },
     {
@@ -295,7 +349,7 @@ export const ecosystem = {
     { icon: 'hospital', title: 'EPS', detail: 'Facturas con soportes' },
     { icon: 'users', title: 'Pacientes', detail: 'Citas y recordatorios' },
     { icon: 'stethoscope', title: 'Profesionales', detail: 'Agenda e historia clínica' },
-    { icon: 'calculator', title: 'Contabilidad', detail: 'Exportación contable' },
+    { icon: 'calculator', title: 'Contador', detail: 'Reportes listos para revisar' },
   ],
 };
 
@@ -584,7 +638,7 @@ export const faq = {
   items: [
     {
       q: '¿Qué puedo hacer con HealthCode?',
-      a: 'Llevar la agenda, la historia clínica, la facturación electrónica, los RIPS, el RDA y la nómina electrónica de tu institución desde un solo lugar. Cada atención se registra una vez y esa información alimenta todo lo demás.',
+      a: 'Llevar la agenda, la historia clínica, las imágenes de rayos X, la facturación electrónica, los RIPS, el RDA, la cartera, la tesorería, la contabilidad, el inventario y la nómina electrónica de tu institución desde un solo lugar. Cada atención se registra una vez y esa información alimenta todo lo demás.',
     },
     {
       q: '¿Qué es el RDA y HealthCode lo envía por mí?',

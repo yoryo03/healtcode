@@ -49,10 +49,10 @@ const messages = diagram.messages.map((m) => {
     </ol>
 
     <!-- Diagrama de secuencia -->
-    <div data-reveal class="mt-20 rounded-[2rem] bg-white p-6 text-navy-800 shadow-card sm:p-10">
+    <div data-reveal class="mt-20 rounded-[2rem] bg-card p-6 text-ink shadow-card sm:p-10 dark:ring-1 dark:ring-white/10">
       <div class="text-center">
-        <h3 class="text-2xl font-black tracking-tight text-balance text-navy-900 uppercase md:text-3xl">{diagram.title}</h3>
-        <p class="mt-2 text-navy-500">{diagram.subtitle}</p>
+        <h3 class="text-2xl font-black tracking-tight text-balance text-ink uppercase md:text-3xl">{diagram.title}</h3>
+        <p class="mt-2 text-ink-muted">{diagram.subtitle}</p>
       </div>
 
       <!-- Escritorio: carriles y flechas -->
@@ -64,12 +64,12 @@ const messages = diagram.messages.map((m) => {
                 <span
                   class:list={[
                     'flex h-14 w-14 items-center justify-center rounded-2xl',
-                    a.icon === 'logo' ? 'bg-navy-900 shadow-soft' : 'bg-mist text-navy-800 ring-1 ring-navy-100',
+                    a.icon === 'logo' ? 'bg-navy-900 shadow-soft dark:bg-navy-950' : 'bg-card-alt text-ink ring-1 ring-line',
                   ]}
                 >
                   {a.icon === 'logo' ? <Isotipo variant="white" class="h-7 w-7" /> : <Icon name={a.icon} class="h-7 w-7" />}
                 </span>
-                <span class="text-xs font-black tracking-wide text-navy-900 uppercase">{a.label}</span>
+                <span class="text-xs font-black tracking-wide text-ink uppercase">{a.label}</span>
               </div>
             ))
           }
@@ -79,7 +79,7 @@ const messages = diagram.messages.map((m) => {
           {
             diagram.actors.map((_, i) => (
               <span
-                class="absolute top-0 bottom-0 border-l-2 border-dashed border-navy-200"
+                class="absolute top-0 bottom-0 border-l-2 border-dashed border-line-strong"
                 style={`left: calc(${(i * 2 + 1) * 10}% - 1px)`}
                 aria-hidden="true"
               />
@@ -90,12 +90,12 @@ const messages = diagram.messages.map((m) => {
               messages.map((m, n) => (
                 <li class="grid grid-cols-10">
                   <div class="relative px-1" style={`grid-column: ${m.column}`}>
-                    <div class:list={['relative h-0.5', m.incoming ? 'bg-navy-400' : 'bg-brand-600']}>
+                    <div class:list={['relative h-0.5', m.incoming ? 'bg-navy-400' : 'bg-brand-600 dark:bg-mint-400']}>
                       <svg
                         class:list={[
                           'absolute top-1/2 h-3 w-3 -translate-y-1/2',
                           m.toRight ? '-right-1' : '-left-1 rotate-180',
-                          m.incoming ? 'text-navy-400' : 'text-brand-600',
+                          m.incoming ? 'text-navy-400' : 'text-brand-600 dark:text-mint-400',
                         ]}
                         viewBox="0 0 10 10"
                         aria-hidden="true"
@@ -104,7 +104,7 @@ const messages = diagram.messages.map((m) => {
                       </svg>
                       <span
                         class:list={[
-                          'absolute top-1/2 left-1/2 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-xs font-black text-white ring-4 ring-white',
+                          'absolute top-1/2 left-1/2 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-xs font-black text-white ring-4 ring-card',
                           m.incoming ? 'bg-navy-500' : 'bg-brand-600',
                         ]}
                       >
@@ -113,9 +113,9 @@ const messages = diagram.messages.map((m) => {
                     </div>
                     <!-- El fondo blanco tapa las líneas punteadas que pasan por detrás del texto -->
                     <div class="mt-6 text-center">
-                      <span class="inline-block bg-white px-2">
-                        <span class="block text-xs font-black tracking-wide text-navy-900 uppercase">{m.title}</span>
-                        <span class="block text-xs text-navy-500">{m.detail}</span>
+                      <span class="inline-block bg-card px-2">
+                        <span class="block text-xs font-black tracking-wide text-ink uppercase">{m.title}</span>
+                        <span class="block text-xs text-ink-muted">{m.detail}</span>
                       </span>
                     </div>
                   </div>
@@ -130,7 +130,7 @@ const messages = diagram.messages.map((m) => {
       <ol class="mt-8 space-y-3 md:hidden">
         {
           messages.map((m, n) => (
-            <li class="flex gap-4 rounded-2xl bg-mist p-4">
+            <li class="flex gap-4 rounded-2xl bg-card-alt p-4">
               <span
                 class:list={[
                   'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-black text-white',
@@ -140,20 +140,20 @@ const messages = diagram.messages.map((m) => {
                 {n + 1}
               </span>
               <div>
-                <p class="flex flex-wrap items-center gap-1 text-[11px] font-bold tracking-wide text-brand-700 uppercase">
+                <p class="flex flex-wrap items-center gap-1 text-[11px] font-bold tracking-wide text-accent-strong uppercase">
                   {labelOf(m.from)}
                   <Icon name="arrow-right" class="h-3 w-3" strokeWidth={2.5} />
                   {labelOf(m.to)}
                 </p>
-                <p class="mt-1 font-bold text-navy-900">{m.title}</p>
-                <p class="text-sm text-navy-500">{m.detail}</p>
+                <p class="mt-1 font-bold text-ink">{m.title}</p>
+                <p class="text-sm text-ink-muted">{m.detail}</p>
               </div>
             </li>
           ))
         }
       </ol>
 
-      <p class="mt-8 flex items-center justify-center gap-2 text-center text-sm font-bold text-brand-700">
+      <p class="mt-8 flex items-center justify-center gap-2 text-center text-sm font-bold text-accent-strong">
         <Icon name="activity" class="h-4 w-4 shrink-0" strokeWidth={2.25} />
         {diagram.note}
       </p>

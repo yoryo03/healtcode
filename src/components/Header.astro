@@ -9,7 +9,7 @@ import Icon from './Icon.astro';
       <img src="/logo-white.svg" alt={site.name} class="h-7 w-auto" width="159" height="40" />
     </a>
 
-    <nav class="hidden items-center gap-6 lg:flex" aria-label={ui.mainNav}>
+    <nav class="hidden items-center gap-5 xl:gap-6 lg:flex" aria-label={ui.mainNav}>
       {
         nav.map((item) => (
           <a href={item.href} class="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-200 transition hover:text-white">
@@ -24,23 +24,38 @@ import Icon from './Icon.astro';
       }
     </nav>
 
-    <div class="hidden items-center gap-2 lg:flex">
-      <a href={site.loginUrl} class="btn btn-sm btn-outline-white">{ui.login}</a>
-      <a href={hero.primaryCta.href} class="btn btn-sm btn-mint">{hero.primaryCta.label}</a>
-    </div>
+    <div class="flex items-center gap-2">
+      <!-- Botón de modo oscuro: luna en modo claro, sol en modo oscuro -->
+      <button
+        id="theme-btn"
+        type="button"
+        class="theme-toggle flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-navy-200 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint-400"
+        aria-label={ui.darkMode}
+        aria-pressed="false"
+        title={ui.darkMode}
+      >
+        <Icon name="moon" class="h-5 w-5 dark:hidden" />
+        <Icon name="sun" class="hidden h-5 w-5 dark:block" />
+      </button>
 
-    <button
-      id="menu-btn"
-      type="button"
-      class="rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
-      aria-label={ui.openMenu}
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      data-open-label={ui.openMenu}
-      data-close-label={ui.closeMenu}
-    >
-      <Icon name="menu" class="h-6 w-6" />
-    </button>
+      <div class="hidden items-center gap-2 lg:flex">
+        <a href={site.loginUrl} class="btn btn-sm btn-outline-white">{ui.login}</a>
+        <a href={hero.primaryCta.href} class="btn btn-sm btn-mint">{hero.primaryCta.label}</a>
+      </div>
+
+      <button
+        id="menu-btn"
+        type="button"
+        class="rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
+        aria-label={ui.openMenu}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-open-label={ui.openMenu}
+        data-close-label={ui.closeMenu}
+      >
+        <Icon name="menu" class="h-6 w-6" />
+      </button>
+    </div>
   </div>
 
   <nav
@@ -78,4 +93,50 @@ import Icon from './Icon.astro';
   };
   btn?.addEventListener('click', () => setOpen(menu?.classList.contains('hidden') ?? false));
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+  // Modo oscuro. Layout.astro ya puso data-theme en <html> antes de pintar; aquí solo se cambia y se recuerda.
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('theme-btn');
+  const STORAGE_KEY = 'hc-theme';
+  const syncThemeBtn = () => themeBtn?.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+  const applyTheme = (theme: 'light' | 'dark', remember: boolean) => {
+    root.dataset.theme = theme;
+    if (remember) {
+      try {
+        localStorage.setItem(STORAGE_KEY, theme);
+      } catch {
+        // Navegación privada o almacenamiento bloqueado: el cambio vale solo para esta visita.
+      }
+    }
+    syncThemeBtn();
+  };
+  syncThemeBtn();
+
+  themeBtn?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Transición suave entre colores donde el navegador la soporta.
+    if ('startViewTransition' in document && !reduce) {
+      document.startViewTransition(() => applyTheme(next, true));
+    } else {
+      applyTheme(next, true);
+    }
+  });
+
+  // Si la persona nunca usó el botón, la página sigue los cambios del sistema operativo.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(STORAGE_KEY);
+    } catch {
+      saved = null;
+    }
+    if (!saved) applyTheme(e.matches ? 'dark' : 'light', false);
+  });
 </script>
+
+<noscript>
+  <style is:inline>
+    .theme-toggle { display: none !important; }
+  </style>
+</noscript>

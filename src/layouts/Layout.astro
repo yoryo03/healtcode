@@ -21,6 +21,19 @@ const { title = `${site.name} · ${site.tagline}`, description = site.descriptio
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="es_CO" />
+    <script is:inline>
+      // Modo claro u oscuro antes de pintar (evita el parpadeo). Usa lo que la persona eligió con el botón
+      // del header; si nunca eligió, sigue la preferencia de su sistema operativo.
+      (function () {
+        var theme = 'light';
+        try {
+          var saved = localStorage.getItem('hc-theme');
+          if (saved === 'dark' || saved === 'light') theme = saved;
+          else if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,7 +43,7 @@ const { title = `${site.name} · ${site.tagline}`, description = site.descriptio
     />
     <title>{title}</title>
   </head>
-  <body class="bg-white font-sans text-navy-700 antialiased">
+  <body class="bg-canvas font-sans text-ink-soft antialiased">
     <slot />
 
     <script>

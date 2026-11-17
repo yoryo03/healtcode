@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Modo oscuro: el botón del header pone data-theme="dark" en <html> (ver Layout.astro y Header.astro).
+   La variante `dark:` se usa solo para casos puntuales; lo normal es usar los colores de superficie de abajo. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* Tokens de marca HealthCode (ver docs/brand/HealthCode-Color-y-Tipografia.pdf)
    Navy #19253A → navy-800   |   Verde #20816B → brand-600
    mint-*    versión luminosa del verde de marca. Solo para acentos sobre fondos oscuros.
@@ -38,6 +42,21 @@
   --color-whatsapp-dark: #1da851;
 
   --color-mist: #f3f6f5;
+
+  /* Colores de superficie y texto que cambian con el modo oscuro (valores claros aquí, oscuros más abajo).
+     Usarlos en las zonas claras de la página; las secciones que ya son oscuras siguen con navy-* y mint-*. */
+  --color-canvas: #ffffff; /* fondo de la página */
+  --color-canvas-alt: #f3f6f5; /* fondo alterno de sección (antes bg-mist) */
+  --color-card: #ffffff; /* tarjetas */
+  --color-card-alt: #f3f6f5; /* bloques dentro de tarjetas */
+  --color-ink: #121b2b; /* títulos */
+  --color-ink-soft: #263349; /* texto de lectura */
+  --color-ink-muted: #4d5b76; /* texto secundario */
+  --color-line: #e5e9f0; /* bordes suaves */
+  --color-line-strong: #c9d1dd; /* bordes de campos y líneas de diagramas */
+  --color-accent: #20816b; /* verde para resaltar en títulos */
+  --color-accent-strong: #1a6957; /* verde para textos pequeños y enlaces */
+  --color-tint: #eef8f4; /* fondo verde muy suave (chips, iconos) */
 
   /* Alte Haas Grotesk (tipografía de marca) no está en Google Fonts; Inter es la alternativa más cercana. */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -79,9 +98,27 @@
   }
 }
 
+/* Valores del modo oscuro. Sin JavaScript la página se queda en modo claro. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: #121b2b;
+  --color-canvas-alt: #0e1522;
+  --color-card: #19253a;
+  --color-card-alt: rgb(255 255 255 / 0.06);
+  --color-ink: #ffffff;
+  --color-ink-soft: #c9d1dd;
+  --color-ink-muted: #a3afc2;
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-line-strong: rgb(255 255 255 / 0.2);
+  --color-accent: #4fd9a8;
+  --color-accent-strong: #84e8c4;
+  --color-tint: rgb(79 217 168 / 0.12);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -117,16 +154,16 @@
     @apply bg-white text-navy-900 hover:-translate-y-0.5 hover:bg-brand-50;
   }
   .btn-dark {
-    @apply bg-navy-900 text-white hover:-translate-y-0.5 hover:bg-navy-800;
+    @apply bg-navy-900 text-white hover:-translate-y-0.5 hover:bg-navy-800 dark:bg-white dark:text-navy-900 dark:hover:bg-navy-100;
   }
   .btn-secondary {
-    @apply border border-navy-200 bg-white text-navy-800 hover:border-brand-500 hover:text-brand-700;
+    @apply border border-line-strong bg-card text-ink hover:border-brand-500 hover:text-accent-strong;
   }
   .btn-outline-white {
     @apply border border-white/30 text-white hover:border-white/60 hover:bg-white/10;
   }
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold tracking-wider text-brand-700 uppercase;
+    @apply inline-flex items-center gap-2 rounded-full bg-tint px-3 py-1 text-xs font-bold tracking-wider text-accent-strong uppercase;
   }
   .eyebrow-dark {
     @apply bg-white/10 text-mint-300 ring-1 ring-white/15;

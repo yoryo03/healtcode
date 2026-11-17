@@ -18,10 +18,10 @@ const { eyebrow, title, highlight, subtitle, align = 'center', dark = false } = 
   <h2
     class:list={[
       'mt-4 text-3xl leading-[1.02] font-black tracking-tight text-balance uppercase sm:text-4xl md:text-5xl',
-      dark ? 'text-white' : 'text-navy-900',
+      dark ? 'text-white' : 'text-ink',
     ]}
   >
-    <Highlight text={title} highlight={highlight} class={dark ? 'text-mint-400' : 'text-brand-600'} />
+    <Highlight text={title} highlight={highlight} class={dark ? 'text-mint-400' : 'text-accent'} />
   </h2>
-  {subtitle && <p class:list={['mt-5 text-lg', dark ? 'text-navy-200' : 'text-navy-500']}>{subtitle}</p>}
+  {subtitle && <p class:list={['mt-5 text-lg text-pretty', dark ? 'text-navy-200' : 'text-ink-muted']}>{subtitle}</p>}
 </div>

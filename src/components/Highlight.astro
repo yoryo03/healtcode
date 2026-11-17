@@ -5,7 +5,7 @@ interface Props {
   highlight?: string;
   class?: string;
 }
-const { text, highlight, class: className = 'text-brand-600' } = Astro.props;
+const { text, highlight, class: className = 'text-accent' } = Astro.props;
 
 const i = highlight ? text.indexOf(highlight) : -1;
 const before = i >= 0 ? text.slice(0, i) : text;

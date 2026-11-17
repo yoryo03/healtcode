@@ -11,15 +11,15 @@ import SectionHeading from './SectionHeading.astro';
       {
         benefits.items.map((b, i) => (
           <div data-reveal style={`--reveal-delay:${i * 90}ms`}>
-            <div class="group relative h-full overflow-hidden rounded-3xl border border-navy-100 bg-white p-7 transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-soft">
-              <span class="absolute top-3 right-5 text-6xl font-black text-navy-50 transition group-hover:text-brand-50" aria-hidden="true">
+            <div class="group relative h-full overflow-hidden rounded-3xl border border-line bg-card p-7 transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-soft dark:hover:border-mint-400/40">
+              <span class="absolute top-3 right-5 text-6xl font-black text-card-alt transition group-hover:text-tint" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span class="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-brand-500 to-brand-700 text-white shadow-glow">
                 <Icon name={b.icon} class="h-7 w-7" />
               </span>
-              <h3 class="relative mt-6 text-lg font-extrabold text-navy-900">{b.title}</h3>
-              <p class="relative mt-2 text-sm leading-relaxed text-navy-500">{b.description}</p>
+              <h3 class="relative mt-6 text-lg font-extrabold text-balance text-ink">{b.title}</h3>
+              <p class="relative mt-2 text-sm leading-relaxed text-ink-muted">{b.description}</p>
             </div>
           </div>
         ))
